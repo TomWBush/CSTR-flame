@@ -12,8 +12,9 @@
             <div class="inner flame"></div>
         </div>
         <div class="controller">
+            <input type="range" min="0" max="149" value="1" id="temp-range" onchange="changeTemp();">
+            <label for="temp-range" id="temp-label">Temperature</label>
             <button id="color-button" onclick="changeColor()"> Start </button>
-            <input type="range" min="0" max="149" value="1" id="tempRange" onchange="changeTemp();">
         </div>
     <script src="js/scripts.js"></script>
     </body>

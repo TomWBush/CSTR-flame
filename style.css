@@ -1,3 +1,7 @@
+body {
+    font-family: arial, Arial, Helvetica, sans-serif;
+}
+
 .container {
     margin:80px auto;
     width:70px;
@@ -82,7 +86,18 @@ button {
     position: relative;
 }
 
+#temp-label {
+    position: absolute;
+    left: 40%;
+}
+
+#temp-range {
+    position: absolute;
+    left: 46%;
+}
+
 #color-button {
     position: absolute;
-    left: 47%;
+    left: 47.5%;
+    top: 2em;
 }
