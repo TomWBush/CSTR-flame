@@ -18,6 +18,16 @@ function changeTemp() {
 	innerFlame.setAttribute("style", "background-color: " + color + "; box-shadow: 0px 0px 9px 4px " + color + ";");
 }
 
+function setColor(temp) {
+	let innerFlame = document.getElementsByClassName("inner flame")[0];
+	let val = Math.round(temp / 10000 * (gradient.length-1)); //document.getElementById("temp-range").value;
+	if(val > 149){
+		val = 149;
+	}
+	var color = gradient[val];
+	innerFlame.setAttribute("style", "background-color: " + color + "; box-shadow: 0px 0px 9px 4px " + color + ";");
+}
+
 var gradient = [];
 
 function computeGradient(c1, c2){

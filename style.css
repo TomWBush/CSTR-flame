@@ -101,3 +101,14 @@ button {
     left: 47.5%;
     top: 2em;
 }
+
+#temp_display{
+    text-align: center;
+    font-size: x-large;
+}
+
+.option{
+    text-align: center;
+    font-size: large;
+    margin: 10px;
+}
