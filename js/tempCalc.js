@@ -41,7 +41,10 @@ var subscripts = {
 
 var u = 1;
 
-function findTemp(){
+/**
+ * Calculate the flame temperature for input combustion.
+ */
+function findTemp() {
     // get combustible from dropdown menu
     oxidant_ratio = Number(document.getElementById("oxidantratio").innerHTML);
     combustible = document.getElementById("combustible").value;
@@ -70,18 +73,16 @@ function findTemp(){
     var s = 0;
     var t = 0;
 
-    if (u == st){
+    if (u == st) {
         // stoichiometric
         y = n;
         z = m/2;
-    }
-    else if (u > st){
+    } else if (u > st) {
         // excess oxidant
         y = n;
         z = m/2;
         t = u - st;
-    }
-    else{
+    } else {
         // lack of oxidant
         s = (4*(n-u)+m)/(4*n+m);
         z = 2*(u+n*(s-1));
@@ -115,29 +116,43 @@ function findTemp(){
     document.getElementById("temp_display").innerHTML = Tf.toString() + " K";
 
     setColor(Tf);
-};
+}
 
-function newt_p5(a, r0){
-    // uses newton's method to solve for root (all coefficients are in array a as shown above)
+/**
+ * calculate the root of a fifth degree polynomial using Newton's
+ * method, provided an inital guess r0.
+ * @param {*} a  Coefficients of plynomial (vector of length 6)
+ * @param {*} r0 The initial guess
+ */
+function newt_p5(a, r0) {
+    // Uses newton's method to solve for root (all coefficients are in array a as shown above)
     eps = 1.e-2;
     x = r0;
     y = ((((a[5]*x+a[4])*x+a[3])*x+a[2])*x+a[1])*x+a[0];
 
-    while(Math.abs(y) > eps){
+    while (Math.abs(y) > eps) {
         yp = (((5*a[5]*x+4*a[4])*x+3*a[3])*x+2*a[2])*x+a[1];
         x = x - y/yp;
         y = ((((a[5]*x+a[4])*x+a[3])*x+a[2])*x+a[1])*x+a[0];
     }
 
     return x;
-};
+}
 
-function change_n2o2ratio(value){
+/**
+ * Set displayed N2/O2 ratio value on user input.
+ * @param {*} value User input slider value
+ */
+function change_n2o2ratio(value) {
     num = Number(value).toFixed(3);
     document.getElementById("n2o2ratio").innerHTML = num.toString();
-};
+}
 
-function change_oxratio(value){
+/**
+ * Set displayed Oxidant to Combustible ratio value on user input.
+ * @param {*} value User input slider value
+ */
+function change_oxratio(value) {
     num = Number(value).toFixed(2);
     document.getElementById("oxidantratio").innerHTML = num.toString();
-};
+}
