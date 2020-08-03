@@ -25,18 +25,18 @@ var heat_capacity = {
     "C8H16":[35.93244, 0.5398176,   0,  -0.00017053,     0]
 };
 
-// room temp in K
+// room temp in K`
 var T0 = 298;
 
 var subscripts = {
-    //    n  m  l   T0
-    "H2":[0, 2, 0, 3000],
-    "CO":[1, 0, 1, 3000],
-    "CH4":[1, 4, 0, 3000],
-    "C2H2":[2, 2, 0, 3000],
-    "C2H5OH":[2, 6, 1, 3000],
-    "C2H6":[2, 6, 0, 3000],
-    "C3H8":[3, 8, 0, 3000]
+    //    n  m  l   T0    Ts
+    "H2":[0, 2, 0, 3000, 200],
+    "CO":[1, 0, 1, 3000, 200],
+    "CH4":[1, 4, 0, 3000, 400],
+    "C2H2":[2, 2, 0, 3000, 400],
+    "C2H5OH":[2, 6, 1, 3000, 400],
+    "C2H6":[2, 6, 0, 3000, 400],
+    "C3H8":[3, 8, 0, 3000, 200]
 };
 
 var u = 1;
@@ -88,6 +88,11 @@ function findTemp() {
         z = 2*(u+n*(s-1));
         y = u - 0.5*z;
     }
+    
+    // calculate equivalence ratio
+    let er = (u+0.5*l)/(n+0.25*m);
+    /*er = Math.max(0.05, er); // no smaller than 0.05
+    er = Math.min(2.5, er); // no larger than 2.5*/
 
     // coefficient placeholders in f(T)
     a = [0, 1, 2, 3, 4, 5];
@@ -110,10 +115,42 @@ function findTemp() {
     // A
     a[1] = (1-s)*enthalpy[combustible]-T0*(a[2]+T0*(a[3]+T0*(a[4]+T0*a[5])))-a[0]/T0;
     
-    Tf = newt_p5(a, r0);
+    // improve guess by bracketing the root
+    let Ti = sub[4];
+    let p0 = Math.sign(ply_val(Ti, a));
+
+    let T1 = Ti + 200;
+    let p1 = Math.sign(ply_val(T1, a));
+
+    let p = p0*p1;
+    
+    Ti = T1;
+    p0 = p1;
+    while(p > 0){
+        T1 = Ti + 200;
+        p1 = ply_val(T1, a);
+        p = p0*p1;
+        p0 = p1;
+        Ti = T1;
+    }
+    
+    Tf = newt_p5(a, Ti);
 
     Tf = Tf.toFixed(4);
     document.getElementById("temp_display").innerHTML = Tf.toString() + " K";
+    
+    
+    var newData = [];
+    let ind = chart_lookup[combustible];
+    for(i = 0; i < chart.series[ind].data.length; i++){
+        newData.push([chart.series[ind].data[i].x, chart.series[ind].data[i].y] );
+    }
+    newData.push([er, Number(Tf)]);
+    //console.log(newData);
+    chart.series[ind].update({
+        data: newData
+    }, true);
+    
 
     setColor(Tf);
 }
@@ -155,4 +192,19 @@ function change_n2o2ratio(value) {
 function change_oxratio(value) {
     num = Number(value).toFixed(2);
     document.getElementById("oxidantratio").innerHTML = num.toString();
+}
+
+function ply_val(xx, c){
+    let nf = 1;
+    let m = c.length;
+    var yy = [];
+    
+    for(let k = 0; k < nf; k++){
+        let s = c[m-1];
+        for(let l = m-2; l >= 0; l--){
+            s = s*xx + c[l];
+        }
+        yy.push(s);
+    }
+    return yy;
 }

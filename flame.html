@@ -11,6 +11,8 @@
             <div class="yellow flame"></div>
             <div class="inner flame"></div>
         </div>
+        <div id="chart"> </div>
+        <div id="controls">
         <div id="temp_display">
             -- K
         </div>
@@ -25,18 +27,25 @@
                 <option value="C3H8">Propane</option>
             </select>
         </div>
+
         <div class="option">N<sub>2</sub>/O<sub>2</sub> ratio:
             <span id="n2o2ratio">1.000</span>
-            <input type="range" min="0" max="3.762" value="1" step="0.05" id="n2o2slider" oninput="change_n2o2ratio(this.value);">
+            <input type="range" min="0" max="3.762" value="1" step="0.05" id="n2o2slider" oninput="change_n2o2ratio(this.value);" onchange="findTemp();">
         </div>
         <div class="option">Oxidant to Combustible ratio:
             <span id="oxidantratio">1.00</span>
-            <input type="range" min="0.05" max="2.5" value="1" step="0.05" id="oxslider" oninput="change_oxratio(this.value);">
+            <input type="range" min="0.05" max="2.5" value="1" step="0.05" id="oxslider" oninput="change_oxratio(this.value);" onchange="findTemp()">
         </div>
         <div class="option">
             <button onclick="findTemp();"> Combust </button>
         </div>
+        <div class="option">
+            <button onclick="chart=resetGraph();"> Reset Graph </button>
+        </div>
+        </div>
     <script src="js/scripts.js"></script>
     <script src="js/tempCalc.js"></script>
+    <script type="text/javascript" src="js/highcharts.js"></script>
+    <script src="js/graph.js"></script>
     </body>
 </html>
