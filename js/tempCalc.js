@@ -141,16 +141,32 @@ function findTemp() {
     
     
     var newData = [];
-    let ind = chart_lookup[combustible];
-    for(i = 0; i < chart.series[ind].data.length; i++){
-        newData.push([chart.series[ind].data[i].x, chart.series[ind].data[i].y] );
+    let dic = chart_lookup[combustible];
+    if(!(w in dic)){
+        dic[w] = chart.series.length;
+        chart.addSeries({
+            data:[[er, Number(Tf)]],
+            name: combustible + "[ratio:" + w + "]",
+            lineWidth: 2,
+        });
+    } else {
+        let inserted = false;
+        let ind =  dic[w];
+        for(i = 0; i < chart.series[ind].data.length; i++){
+            if(chart.series[ind].data[i].x > er && !inserted){
+                inserted = true;
+                newData.push([er, Number(Tf)]);
+            }
+            newData.push([chart.series[ind].data[i].x, chart.series[ind].data[i].y] );
+        }
+        if(!inserted){
+            newData.push([er, Number(Tf)]);
+        }
+
+        chart.series[ind].update({
+            data: newData
+        }, true);
     }
-    newData.push([er, Number(Tf)]);
-    //console.log(newData);
-    chart.series[ind].update({
-        data: newData
-    }, true);
-    
 
     setColor(Tf);
 }

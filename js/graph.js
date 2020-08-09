@@ -1,16 +1,26 @@
 
 var chart_lookup = {
-    "H2":0,
-    "CO":1,
-    "CH4":2,
-    "C2H2":3,
-    "C2H5OH":4,
-    "C2H6":5,
-    "C3H8":6,
+    "H2":{},
+    "CO":{},
+    "CH4":{},
+    "C2H2":{},
+    "C2H5OH":{},
+    "C2H6":{},
+    "C3H8":{},
 };
 
 
 function resetGraph(){
+    
+    chart_lookup = {
+        "H2":{},
+        "CO":{},
+        "CH4":{},
+        "C2H2":{},
+        "C2H5OH":{},
+        "C2H6":{},
+        "C3H8":{},
+    };
 
     return new Highcharts.chart({
 
@@ -31,6 +41,7 @@ function resetGraph(){
         title: {
             text: 'Adiabatic Flame Temperature [K]'
         },
+        showEmpty: false,
     },
 
     xAxis: {
@@ -38,8 +49,9 @@ function resetGraph(){
                 text: 'Equivalence Ratio'
             },
             tickInterval: 0.5,
-            max: 3.750,
+            max: 5,
             min: 0.0,
+            showEmpty: false,
     },
 
     plotOptions: {
@@ -47,7 +59,7 @@ function resetGraph(){
              dataLabels: {
                  enabled: true
              },
-             enableMouseTracking: true
+             enableMouseTracking: false,
         },
         series: {
             label: {
@@ -56,34 +68,43 @@ function resetGraph(){
         }
     },
 
-    series: [{
-        name: 'Hydrogen',
-        data: []
-    },
-     {
-         name: 'Carbon Monoxide',
-         data: []
-     },
-     {
-         name: 'Methane',
-         data: []
-     },
-     {
-         name: 'Acetylene',
-         data: []
-     },
-     {
-         name: 'Ethanol',
-         data: []
-     },
-     {
-         name: 'Ethane',
-         data: []
-     },
-     {
-         name: 'Propane',
-         data: []
-     },
+    series: [
+             {
+                 data:  [null, null],
+                 name:' ',
+                 marker:{
+                    enabled: false
+                 },
+             }
+//             {
+//        lineWidth: 2,
+//        name: 'Hydrogen',
+//        data: []
+//    },
+//     {
+//         name: 'Carbon Monoxide',
+//         data: []
+//     },
+//     {
+//         name: 'Methane',
+//         data: []
+//     },
+//     {
+//         name: 'Acetylene',
+//         data: []
+//     },
+//     {
+//         name: 'Ethanol',
+//         data: []
+//     },
+//     {
+//         name: 'Ethane',
+//         data: []
+//     },
+//     {
+//         name: 'Propane',
+//         data: []
+//     },
              ],
 
     responsive: {
